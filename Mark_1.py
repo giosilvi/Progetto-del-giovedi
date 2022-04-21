@@ -1,6 +1,6 @@
 # 
 import numpy as np 
-
+from pynput import keyboard
 
 
 print('******Welcome to the ORACLE game********\nThe oracle will try to guess what are you gonna press next.')
@@ -27,18 +27,27 @@ lastkeys ='   '
 
 turn = 0
 
-while input_key!=' ':
+while input_key!= keyboard.Key.space:
     turn +=1
 
 
     print('\nSeries:',lastkeys)
-    print('Press A o D (turn=',turn,')') #ask
-    input_key = input() # get input here
-
-    
-
-    if input_key in ['a','d']: 
+    print('Press A o D (turn=',turn,')')#ask
+    with keyboard.Events() as events: 
+        # Block for as much as possible
+        event = events.get(1e6)
+        input_key = event.key 
+        
+        print('è stato premuto ', input_key)
+  
+    if input_key in [keyboard.KeyCode.from_char('a'), keyboard.KeyCode.from_char('d')]: 
+        if input_key == keyboard.KeyCode.from_char('a'):
+            input_key = 'a'
+        else:
+            input_key = 'd'
+            
         # Update pattern here
+        
         lastkeys = lastkeys[1:3] + input_key  # ada -> da + key(a) -> daa -> aa.....
 
         #check if you win
@@ -83,10 +92,9 @@ while input_key!=' ':
                 oracle_next = 'a'
             else:
                 oracle_next = 'd'
-
         #
         #
-    elif input_key == ' ':
+    elif input_key == keyboard.Key.space:
         print('Exiting')
         print(' Patterns:',patter_multi)
     else:
