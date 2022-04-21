@@ -1,7 +1,7 @@
 # 
 import numpy as np 
 from pynput import keyboard
-
+import time
 
 print('******Welcome to the ORACLE game********\nThe oracle will try to guess what are you gonna press next.')
 print('Enter space to exit.')
@@ -29,13 +29,13 @@ turn = 0
 
 while input_key!= keyboard.Key.space:
     turn +=1
-
+    time.sleep(0.1)
 
     print('\nSeries:',lastkeys)
     print('Press A o D (turn=',turn,')')#ask
     with keyboard.Events() as events: 
         # Block for as much as possible
-        event = events.get(1e6)
+        event = events.get(1e6) 
         input_key = event.key 
         
         print('è stato premuto ', input_key)
