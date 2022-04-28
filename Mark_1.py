@@ -7,6 +7,7 @@ from functions import * # import all functions
 
 print('******Welcome to the ORACLE game********\nThe oracle will try to guess what are you gonna press next.')
 print('Enter space to exit.')
+print('If you are Andrea be aware....you will lose')
 
 counto = 0
 county = 0
