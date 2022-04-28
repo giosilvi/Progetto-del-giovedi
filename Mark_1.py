@@ -11,22 +11,28 @@ print('If you are Andrea be aware....you will lose')
 
 counto = 0
 county = 0
+n = 4
 
 # pattern = [['d','a'],['a','d']]
 pattern = {'d': 'a', 'a':'d'}
 
-pattern_multi = {'aaa':1,
+""" pattern_multi = {'aaa':1,
                 'aad':1, 
                 'ada':1,
                 'add':1,
                 'daa':1,
                 'dad':1,
                 'dda':1,
-                'ddd':1}
+                'ddd':1} """
+
+pattern_multi = prepare(n)
+name_of_the_file = str(n)+'oracle_memory.txt'
+pattern_multi = load_dictionary(pattern_multi, name_of_the_file)
+print(pattern_multi)
 
 oracle_next = 'a' if np.random.rand()<0.5 else 'd'
 input_key = ''
-last3keys ='   '
+last3keys =' '*n
 
 turn = 0
 
@@ -50,7 +56,7 @@ while input_key!= keyboard.Key.space:
             input_key = input_key.char # input_key: KeyCode -> input_key:char
             
             # Update pattern here
-            last3keys = last3keys[1:3] + input_key  # ada -> da + key(a) -> daa -> aa.....
+            last3keys = last3keys[1:n] + input_key  # ada -> da + key(a) -> daa -> aa.....
 
             #check if you win
             counto,county = check_win(input_key, oracle_next, counto, county)
@@ -59,14 +65,14 @@ while input_key!= keyboard.Key.space:
 
             youwin=round(county/(counto+county)*100, ndigits = 3) #percentage of victory
             print("Winning rate: ", youwin, '%')
-            
+
 
             if last3keys in pattern_multi: # if pattern is recognized
                 pattern_multi[last3keys] +=1 #update likelihood
                 
-                contestants = find_contenders(last3keys, pattern_multi) 
+                contestants = find_contenders(last3keys, pattern_multi, n) 
                 #print('The contestant are:', contestants)
-                oracle_next = oracle_prediction(contestants)
+                oracle_next = oracle_prediction(contestants, n)
                
             else:
                 # If no pattern, next oracle is random
@@ -78,5 +84,8 @@ while input_key!= keyboard.Key.space:
     else:
         print('Wrong key')
 
+save_dictionary(pattern_multi, name_of_the_file)
+print(pattern_multi)
+plot_histogram(pattern_multi)
 print('Last goodbye')
     
