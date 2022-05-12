@@ -1,5 +1,6 @@
 # FUNCTIONS DECLARATION
 from pynput import keyboard
+import numpy as np
 def get_input_key():
     with keyboard.Events() as events: 
         # Block for as much as possible

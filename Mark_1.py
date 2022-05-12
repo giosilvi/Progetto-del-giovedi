@@ -1,13 +1,23 @@
 # 
+import tkinter
 import numpy as np 
 from pynput import keyboard
 import time
 
 from functions import * # import all functions
 
+from tkinter import *
+
+
+root = Tk()
+root.geometry("400x400")
+
+
+
 print('******Welcome to the ORACLE game********\nThe oracle will try to guess what are you gonna press next.')
 print('Enter space to exit.')
-
+global counto
+global county
 counto = 0
 county = 0
 
@@ -23,59 +33,82 @@ pattern_multi = {'aaa':1,
                 'dda':1,
                 'ddd':1}
 
+global oracle_next
 oracle_next = 'a' if np.random.rand()<0.5 else 'd'
 input_key = ''
+global last3keys
 last3keys ='   '
 
 turn = 0
 
-while input_key!= keyboard.Key.space:
-    turn +=1
-    time.sleep(0.5) #weird
 
-    print('\nSeries:',last3keys)
-    print('Press A o D (turn=',turn,')')#ask
+def main_function(input_key):
+        # Update pattern here
+        global last3keys
+        last3keys = last3keys[1:3] + input_key  # ada -> da + key(a) -> daa -> aa.....
 
-    input_key = get_input_key()
-    # print('pressed:',input_key)
-
-    if input_key == keyboard.Key.space:
-        print('Exiting')
-        print(' Patterns:',pattern_multi)
-        break #exit from while loop
-    
-    if hasattr(input_key, 'char'):
-        if input_key.char in ['a', 'd']: 
-            input_key = input_key.char # input_key: KeyCode -> input_key:char
+        #check if you win
+        global oracle_next
+        global counto
+        global county
+        counto,county = check_win(input_key, oracle_next, counto, county)
             
-            # Update pattern here
-            last3keys = last3keys[1:3] + input_key  # ada -> da + key(a) -> daa -> aa.....
+        print('Oracle: ', counto, ' You: ', county)
 
-            #check if you win
-            counto,county = check_win(input_key, oracle_next, counto, county)
-                
-            print('Oracle: ', counto, ' You: ', county)
+        youwin=round(county/(counto+county)*100, ndigits = 3) #percentage of victory
+        print("Winning rate: ", youwin, '%')
+        
 
-            youwin=round(county/(counto+county)*100, ndigits = 3) #percentage of victory
-            print("Winning rate: ", youwin, '%')
+        if last3keys in pattern_multi: # if pattern is recognized
+            pattern_multi[last3keys] +=1 #update likelihood
             
-
-            if last3keys in pattern_multi: # if pattern is recognized
-                pattern_multi[last3keys] +=1 #update likelihood
-                
-                contestants = find_contenders(last3keys, pattern_multi) 
-                #print('The contestant are:', contestants)
-                oracle_next = oracle_prediction(contestants)
-               
-            else:
-                # If no pattern, next oracle is random
-                oracle_next = 'a' if np.random.rand() > 0.5 else 'd'
-      
+            contestants = find_contenders(last3keys, pattern_multi) 
+            #print('The contestant are:', contestants)
+            oracle_next = oracle_prediction(contestants)
+        
         else:
-            print('Wrong char key')
-  
-    else:
-        print('Wrong key')
+            # If no pattern, next oracle is random
+            oracle_next = 'a' if np.random.rand() > 0.5 else 'd'
+        return oracle_next
 
-print('Last goodbye')
-    
+
+
+
+
+frame = Frame(root)
+frame.pack()
+import datetime
+root.title("Time") 
+root.geometry("500x500") 
+time_label = Label(root, text="Time: ")
+time_label.pack() 
+time_text = Text(root, height=1, width=8) 
+time_text.pack() 
+def update_time(): 
+    time_text.delete(1.0, END) 
+    time_text.insert(END, str(datetime.datetime.now().time())) 
+    root.after(1000, update_time) 
+update_time()
+
+
+label = Label(frame, text=last3keys)
+label.pack(side = TOP)
+
+def left_button_click(event):
+    print('a')
+    main_function('a')
+    return 
+
+def right_button_click(event):
+    main_function('d')
+    return 
+
+button1 = Button(root, text="Left", font=("Arial", 20))
+input_key = button1.bind("<Button-1>", left_button_click)
+button1.pack(side=LEFT)
+
+button2 = Button(root, text="Right", font=("Arial", 20))
+input_key = button2.bind("<Button-1>", right_button_click)
+button2.pack(side=RIGHT)
+root.mainloop()
+
