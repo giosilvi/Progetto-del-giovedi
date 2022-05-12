@@ -20,18 +20,24 @@ global counto
 global county
 counto = 0
 county = 0
+n = 4
 
 # pattern = [['d','a'],['a','d']]
 pattern = {'d': 'a', 'a':'d'}
 
-pattern_multi = {'aaa':1,
+""" pattern_multi = {'aaa':1,
                 'aad':1, 
                 'ada':1,
                 'add':1,
                 'daa':1,
                 'dad':1,
                 'dda':1,
-                'ddd':1}
+                'ddd':1} """
+
+pattern_multi = prepare(n)
+name_of_the_file = str(n)+'oracle_memory.txt'
+pattern_multi = load_dictionary(pattern_multi, name_of_the_file)
+print(pattern_multi)
 
 global oracle_next
 oracle_next = 'a' if np.random.rand()<0.5 else 'd'
