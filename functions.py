@@ -1,12 +1,6 @@
 # FUNCTIONS DECLARATION
 from pynput import keyboard
 import numpy as np
-<<<<<<< HEAD
-=======
-import os
-import matplotlib.pyplot as plt
-
->>>>>>> a08a38b078ffac619f79b57c2019792e272d5afb
 def get_input_key():
     with keyboard.Events() as events: 
         # Block for as much as possible
