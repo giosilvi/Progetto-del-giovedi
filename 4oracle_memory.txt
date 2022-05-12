@@ -1,0 +1,16 @@
+aaaa 1
+aaad 2
+aada 1
+aadd 3
+adaa 2
+adad 3
+adda 1
+addd 2
+daaa 2
+daad 2
+dada 4
+dadd 1
+ddaa 2
+ddad 1
+ddda 2
+dddd 2

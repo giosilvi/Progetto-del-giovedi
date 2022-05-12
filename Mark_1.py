@@ -43,7 +43,7 @@ global oracle_next
 oracle_next = 'a' if np.random.rand()<0.5 else 'd'
 input_key = ''
 global last3keys
-last3keys ='   '
+last3keys =' '*n
 
 turn = 0
 
@@ -51,7 +51,7 @@ turn = 0
 def main_function(input_key):
         # Update pattern here
         global last3keys
-        last3keys = last3keys[1:3] + input_key  # ada -> da + key(a) -> daa -> aa.....
+        last3keys = last3keys[1:n] + input_key  # ada -> da + key(a) -> daa -> aa.....
 
         #check if you win
         global oracle_next
@@ -68,9 +68,9 @@ def main_function(input_key):
         if last3keys in pattern_multi: # if pattern is recognized
             pattern_multi[last3keys] +=1 #update likelihood
             
-            contestants = find_contenders(last3keys, pattern_multi) 
+            contestants = find_contenders(last3keys, pattern_multi, n) 
             #print('The contestant are:', contestants)
-            oracle_next = oracle_prediction(contestants)
+            oracle_next = oracle_prediction(contestants, n)
         
         else:
             # If no pattern, next oracle is random
@@ -118,3 +118,5 @@ input_key = button2.bind("<Button-1>", right_button_click)
 button2.pack(side=RIGHT)
 root.mainloop()
 
+save_dictionary(pattern_multi, name_of_the_file)
+print(pattern_multi)

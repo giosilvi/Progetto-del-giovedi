@@ -1,6 +1,8 @@
 # FUNCTIONS DECLARATION
 from pynput import keyboard
 import numpy as np
+import os
+#import matplotlib.pyplot as plt 
 def get_input_key():
     with keyboard.Events() as events: 
         # Block for as much as possible
@@ -79,5 +81,6 @@ def prepare(n=3):
 
     return dictionary
     
+
 
     
