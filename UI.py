@@ -2,7 +2,7 @@
 from tkinter import *
 import time
 from turtle import color
-from PIL import ImageTk, Image
+
 
 root = Tk() # create a window
 root.geometry("800x800") # width x height

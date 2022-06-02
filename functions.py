@@ -58,6 +58,7 @@ def load_dictionary(dictionary, filename):
             for line in f:
                 key, value = line.split()
                 dictionary[key] = int(value)
+            f.close()
     return dictionary
 
 def plot_histogram(dictionary):
